@@ -18,31 +18,28 @@ DATA = {
         'сыр, ломтик': 1,
         'помидор, ломтик': 1,
     },
-    # можете добавить свои рецепты ;)
+    'milkshake': {
+        'молоко, мл': 0.25,
+        'ягоды, г': 0.05,
+        'фрукты, г': 0.1,
+    },
 }
 
-def get_recipe(recipe, servings=1):
-    ''' get recipe in calculated portions '''
-    context_calc = {}
-    for item, values in recipe.items():
-        for i, count in values.values():
-            context_calc[i] = round((count) * servings, 3)
-    return context_calc
 
-def index_view(request, recipe):
+def index_view(request, sign_recipe, servings=1):
+    ''' get recipe in calculated portions '''
 
     servings = request.GET.get('servings', int(1))
-    for rec in DATA.keys():
-        if recipe == rec:
-            if int(servings) > 1 :
-                recipe = get_recipe(DATA[recipe], int(servings))
-            else:
-                recipe = get_recipe(DATA[recipe])
-            context = {'recipe': recipe, 'servings': servings}
-        else:
-            pass
 
-    return render(request, 'calculator/index.html', context=context)
+    context = {}
+    if sign_recipe in DATA:
+        context[sign_recipe] = DATA[sign_recipe]
+
+        for item, value in context.items():
+            for i, count in value.items():
+                context[item][i] = round((count) * servings, 3)
+        return render(request, 'calculator/index.html', context=context)
+
 
 def all_recipe(request):
 

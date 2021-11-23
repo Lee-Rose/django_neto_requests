@@ -20,7 +20,7 @@ from calculator import views
 
 urlpatterns = [
     path('', views.home_view, name='home'),
-    path('/<str:recipe>/$', views.index_view),
+    path('<sign_recipe>/', views.index_view),
     path('all_pecipes', views.all_recipe, name = 'all_rec')
 
 ]
