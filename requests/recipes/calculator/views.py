@@ -29,16 +29,23 @@ DATA = {
 def index_view(request, sign_recipe, servings=1):
     ''' get recipe in calculated portions '''
 
-    servings = request.GET.get('servings', int(1))
+    description = DATA.get(sign_recipe, None)
+    servings = int(request.GET.get('servings', int(1)))
+    if description:
+        context_rec = {}
+        context = {
+            'recipe': context_rec
+        }
+        if sign_recipe in DATA.keys():
+            context_rec[sign_recipe] = DATA[sign_recipe]
 
-    context = {}
-    if sign_recipe in DATA:
-        context[sign_recipe] = DATA[sign_recipe]
+            for item, value in context_rec.items():
+                for i, count in value.items():
+                    context_rec[item][i] = round((count) * servings, 3)
 
-        for item, value in context.items():
-            for i, count in value.items():
-                context[item][i] = round((count) * servings, 3)
-        return render(request, 'calculator/index.html', context=context)
+            return render(request, 'calculator/index.html', context=context)
+    else:
+        return HttpResponse(f'Рецепта {sign_recipe} я не знаю.')
 
 
 def all_recipe(request):

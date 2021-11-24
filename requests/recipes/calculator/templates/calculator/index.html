@@ -5,13 +5,15 @@
     <title>Рецепты</title>
 </head>
 <body>
-    {% for name, rec in context.items %}
-        <h2> {{ name }} </h2>
-        {% for ingredient, amount in rec.items %}
-        <p>{{ ingredient }}: {{ amount }}</p>
+
+        {% for key, item in recipe.items %}
+            <h2> {{ key }}:  </h2>
+            {% for ingredient, count in item.items %}
+                <p> {{ingredient}} {{ count }} </p>
+            {% endfor %}
+
+
         {% endfor %}
-    {% empty %}
-        <p>Такого рецепта не знаю :(</p>
-    {% endfor %}
+
 </body>
 </html>
