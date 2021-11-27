@@ -32,10 +32,9 @@ def index_view(request, sign_recipe, servings=1):
     description = DATA.get(sign_recipe, None)
     servings = int(request.GET.get('servings', int(1)))
     if description:
+
         context_rec = {}
-        context = {
-            'recipe': context_rec
-        }
+
         if sign_recipe in DATA.keys():
             context_rec[sign_recipe] = DATA[sign_recipe]
 
@@ -43,7 +42,12 @@ def index_view(request, sign_recipe, servings=1):
                 for i, count in value.items():
                     context_rec[item][i] = round((count) * servings, 3)
 
-            return render(request, 'calculator/index.html', context=context)
+        context = {
+            'recipe': context_rec
+        }
+
+        return render(request, 'calculator/index.html', context=context)
+
     else:
         return HttpResponse(f'Рецепта {sign_recipe} я не знаю.')
 
